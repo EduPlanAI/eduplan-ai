@@ -10,18 +10,27 @@ export function AuthProvider({ children }) {
   const router = useRouter();
 
   useEffect(() => {
-    // 检查当前会话
-    const getSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setUser(session?.user || null);
-      setLoading(false);
+    const fetchSession = async () => {
+      try {
+        // 新版 Supabase API 获取会话的方式
+        const { data, error } = await supabase.auth.getSession();
+        if (error) {
+          console.error("Error fetching session:", error);
+        } else {
+          setUser(data.session?.user || null);
+        }
+      } catch (err) {
+        console.error("Failed to get session:", err);
+      } finally {
+        setLoading(false);
+      }
     };
-    
-    getSession();
 
-    // 设置监听器
+    fetchSession();
+
+    // 设置认证状态变化监听器
     const { data: authListener } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      (event, session) => {
         setUser(session?.user || null);
         setLoading(false);
       }
