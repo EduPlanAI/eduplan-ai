@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useAuth } from '../../context/AuthContext';
-import { supabase } from '../../lib/supabase';
 import Head from 'next/head';
 
 export default function SignUp() {
@@ -35,7 +34,7 @@ export default function SignUp() {
       
       if (signUpError) throw signUpError;
       
-      // 注册成功，重定向到验证页面
+      // 注册成功，重定向到登录页面
       router.push('/auth/signin');
     } catch (error) {
       console.error('注册错误:', error);
@@ -117,8 +116,9 @@ export default function SignUp() {
           <div>
             <p>
               已有账户？{' '}
+              {/* 注意这里的 Link 组件用法变化 */}
               <Link href="/auth/signin">
-                <a>登录</a>
+                登录
               </Link>
             </p>
           </div>
