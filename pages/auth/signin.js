@@ -69,8 +69,9 @@ export default function SignIn() {
             </div>
 
             <div>
+              {/* 注意这里的 Link 组件用法变化 */}
               <Link href="/auth/reset-password">
-                <a>忘记密码？</a>
+                忘记密码？
               </Link>
             </div>
 
@@ -85,8 +86,9 @@ export default function SignIn() {
           <div>
             <p>
               还没有账户？{' '}
+              {/* 注意这里的 Link 组件用法变化 */}
               <Link href="/auth/signup">
-                <a>注册</a>
+                注册
               </Link>
             </p>
           </div>
