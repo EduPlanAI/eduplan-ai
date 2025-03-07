@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useAuth } from '../../context/AuthContext';
 import Head from 'next/head';
 import styles from '../../styles/PlanView.module.css';
+import { generatePlanPDF } from '../../lib/pdfGenerator';
 
 export default function PlanView() {
   const router = useRouter();
@@ -12,6 +13,7 @@ export default function PlanView() {
   const [plan, setPlan] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
   useEffect(() => {
     // 检查用户是否登录
@@ -55,6 +57,19 @@ export default function PlanView() {
       month: 'long',
       day: 'numeric'
     });
+  }
+
+  // 处理 PDF 下载
+  async function handleDownloadPDF() {
+    try {
+      setIsGeneratingPDF(true);
+      await generatePlanPDF(plan, 'planContent');
+    } catch (err) {
+      console.error('生成 PDF 错误:', err);
+      alert('生成 PDF 时出错，请稍后再试');
+    } finally {
+      setIsGeneratingPDF(false);
+    }
   }
 
   if (loading || isLoading) {
@@ -102,7 +117,7 @@ export default function PlanView() {
           </div>
         </div>
 
-        <div className={styles.planContent}>
+        <div id="planContent" className={styles.planContent}>
           <h1 className={styles.title}>{plan.title}</h1>
           
           <section className={styles.section}>
@@ -216,8 +231,12 @@ export default function PlanView() {
           )}
 
           <div className={styles.actions}>
-            <button className={styles.downloadButton}>
-              下载完整报告 (PDF)
+            <button 
+              className={styles.downloadButton}
+              onClick={handleDownloadPDF}
+              disabled={isGeneratingPDF}
+            >
+              {isGeneratingPDF ? '正在生成 PDF...' : '下载完整报告 (PDF)'}
             </button>
           </div>
         </div>
