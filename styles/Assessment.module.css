@@ -385,3 +385,46 @@
 .downloadButton:hover {
   background-color: #10b981;
 }
+/* 在 styles/Assessment.module.css 文件末尾添加以下样式 */
+
+.saveSection {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.saveButton {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-right: 1rem;
+}
+
+.saveButton:hover {
+  background-color: #2563eb;
+}
+
+.saveButton:disabled {
+  background-color: #93c5fd;
+  cursor: not-allowed;
+}
+
+.savedMessage {
+  display: inline-flex;
+  align-items: center;
+  color: #059669;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  background-color: #d1fae5;
+  border-radius: 5px;
+}
+
+.savedMessage span {
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+}
