@@ -20,7 +20,7 @@ export default function Home() {
         </p>
         <div className={styles.buttonGroup}>
           <Link href="/auth/signin" className={styles.primaryButton}>
-            开始使用
+            开始评估
           </Link>
           <Link href="/about" className={styles.secondaryButton}>
             了解更多
