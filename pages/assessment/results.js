@@ -9,7 +9,10 @@ export default function AssessmentResults() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [assessmentData, setAssessmentData] = useState(null);
+  const [aiAnalysis, setAiAnalysis] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isGeneratingAI, setIsGeneratingAI] = useState(false);
+  const [error, setError] = useState(null);
 
   // 加载评估数据
   useEffect(() => {
@@ -102,6 +105,51 @@ export default function AssessmentResults() {
     };
     return recommendations[styleKey] || [];
   }
+
+  // 生成 AI 教育规划
+  async function generateAIPlan() {
+    if (!assessmentData) return;
+    
+    setIsGeneratingAI(true);
+    setError(null);
+    
+    try {
+      const response = await fetch('/api/ai/generate-plan', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(assessmentData),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to generate AI plan');
+      }
+      
+      const data = await response.json();
+      setAiAnalysis(data.analysis);
+      
+      // 保存 AI 分析结果到本地存储，避免重复生成
+      localStorage.setItem('eduplan_ai_analysis', JSON.stringify(data.analysis));
+    } catch (err) {
+      console.error('Error generating AI plan:', err);
+      setError('生成AI教育规划时出错，请稍后再试');
+    } finally {
+      setIsGeneratingAI(false);
+    }
+  }
+
+  // 检查是否有保存的 AI 分析
+  useEffect(() => {
+    const savedAnalysis = localStorage.getItem('eduplan_ai_analysis');
+    if (savedAnalysis) {
+      try {
+        setAiAnalysis(JSON.parse(savedAnalysis));
+      } catch (err) {
+        console.error('Error parsing saved AI analysis:', err);
+      }
+    }
+  }, []);
 
   if (loading || isLoading) {
     return (
@@ -226,15 +274,76 @@ export default function AssessmentResults() {
             </div>
           </section>
 
-          <section className={styles.section}>
-            <h2>教育规划建议</h2>
-            <p className={styles.upgradeCTA}>
-              获取完整的个性化教育规划需要升级到付费版本。
-            </p>
-            <Link href="/pricing" className={styles.button}>
-              升级账户
-            </Link>
-          </section>
+          {!aiAnalysis && !isGeneratingAI && (
+            <section className={styles.section}>
+              <h2>AI教育规划</h2>
+              <p className={styles.description}>
+                基于您提供的信息，我们可以生成详细的AI教育规划分析。
+              </p>
+              {error && <p className={styles.error}>{error}</p>}
+              <button 
+                onClick={generateAIPlan}
+                className={styles.button}
+                disabled={isGeneratingAI}
+              >
+                生成AI教育规划
+              </button>
+            </section>
+          )}
+
+          {isGeneratingAI && (
+            <section className={styles.section}>
+              <h2>AI教育规划</h2>
+              <div className={styles.loading}>
+                正在生成AI教育规划，请稍候...
+                <div className={styles.spinner}></div>
+              </div>
+            </section>
+          )}
+
+          {aiAnalysis && (
+            <>
+              <section className={styles.section}>
+                <h2>AI学习风格分析</h2>
+                <p>{aiAnalysis.learningStyleAnalysis}</p>
+              </section>
+
+              <section className={styles.section}>
+                <h2>中国教育路径建议</h2>
+                <p>{aiAnalysis.chinaEducationPath}</p>
+              </section>
+
+              <section className={styles.section}>
+                <h2>澳洲教育路径建议</h2>
+                <p>{aiAnalysis.australiaEducationPath}</p>
+              </section>
+
+              <section className={styles.section}>
+                <h2>个性化建议</h2>
+                <p>{aiAnalysis.personalizedRecommendations}</p>
+              </section>
+
+              {aiAnalysis.keyDecisionPoints && aiAnalysis.keyDecisionPoints.length > 0 && (
+                <section className={styles.section}>
+                  <h2>关键决策点</h2>
+                  <div className={styles.decisionPoints}>
+                    {aiAnalysis.keyDecisionPoints.map((point, index) => (
+                      <div key={index} className={styles.decisionPoint}>
+                        <h3>{point.title}</h3>
+                        <p>{point.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              <div className={styles.downloadSection}>
+                <button className={styles.downloadButton}>
+                  下载完整报告 (PDF)
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </main>
     </div>
