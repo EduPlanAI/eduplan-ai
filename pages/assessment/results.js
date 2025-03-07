@@ -422,3 +422,47 @@ async function savePlanToDatabase() {
     </div>
   )}
 </div>
+// 在文件顶部导入 PDF 生成器
+import { generatePlanPDF } from '../../lib/pdfGenerator';
+
+// 在状态变量部分添加
+const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+
+// 添加 PDF 生成函数
+async function handleDownloadPDF() {
+  if (!aiAnalysis || !assessmentData) return;
+  
+  try {
+    setIsGeneratingPDF(true);
+    
+    // 创建一个临时计划对象，格式与保存到数据库的计划相同
+    const tempPlan = {
+      title: `${assessmentData.name || '学生'}的教育规划`,
+      created_at: new Date().toISOString(),
+      assessment_data: assessmentData,
+      ai_analysis: aiAnalysis
+    };
+    
+    await generatePlanPDF(tempPlan, 'resultsContent');
+  } catch (err) {
+    console.error('生成 PDF 错误:', err);
+    alert('生成 PDF 时出错，请稍后再试');
+  } finally {
+    setIsGeneratingPDF(false);
+  }
+}
+
+// 在渲染 AI 分析部分的开始处添加 ID
+// 将 <div className={styles.card}> 修改为:
+<div id="resultsContent" className={styles.card}>
+
+// 修改下载按钮，使用 handleDownloadPDF 函数
+<div className={styles.downloadSection}>
+  <button 
+    onClick={handleDownloadPDF}
+    className={styles.downloadButton}
+    disabled={isGeneratingPDF}
+  >
+    {isGeneratingPDF ? '正在生成 PDF...' : '下载完整报告 (PDF)'}
+  </button>
+</div>
