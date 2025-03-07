@@ -1,0 +1,193 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main {
+  width: 100%;
+  max-width: 800px;
+  padding: 2rem 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.backLink {
+  color: #0070f3;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+.planMeta {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.planContent {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
+
+.title {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #111;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.4rem;
+  color: #111;
+  border-bottom: 1px solid #eaeaea;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.infoItem {
+  padding: 0.5rem;
+}
+
+.infoLabel {
+  font-weight: 500;
+  color: #555;
+}
+
+.styleChart {
+  margin: 1.5rem 0;
+}
+
+.styleBar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.styleLabel {
+  width: 100px;
+  font-size: 0.9rem;
+}
+
+.barContainer {
+  flex: 1;
+  height: 12px;
+  background-color: #eaeaea;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 0 1rem;
+}
+
+.barFill {
+  height: 100%;
+  background-color: #0070f3;
+  transition: width 0.3s ease;
+}
+
+.styleScore {
+  width: 40px;
+  text-align: right;
+  font-weight: 500;
+}
+
+.decisionPoints {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.decisionPoint {
+  background-color: #f5f9ff;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.decisionPoint h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: #0070f3;
+}
+
+.actions {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.downloadButton {
+  background-color: #34d399;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.downloadButton:hover {
+  background-color: #10b981;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.errorContainer {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  text-align: center;
+}
+
+.errorContainer h1 {
+  color: #e53e3e;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 640px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .actions {
+    flex-direction: column;
+  }
+  
+  .downloadButton {
+    width: 100%;
+  }
+}
