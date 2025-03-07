@@ -349,3 +349,76 @@ export default function AssessmentResults() {
     </div>
   );
 }
+// 在 assessment/results.js 文件中添加以下函数
+// 在现有的 aiAnalysis 状态下面添加新的状态变量
+
+const [isSaving, setIsSaving] = useState(false);
+const [isSaved, setIsSaved] = useState(false);
+const [saveError, setSaveError] = useState(null);
+
+// 添加保存计划到数据库的函数
+async function savePlanToDatabase() {
+  if (!aiAnalysis || !assessmentData) return;
+  
+  setIsSaving(true);
+  setSaveError(null);
+  
+  try {
+    const response = await fetch('/api/plans/save', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        assessmentData,
+        aiAnalysis
+      }),
+    });
+    
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.error || '保存计划失败');
+    }
+    
+    setIsSaved(true);
+    
+    // 显示成功消息，3秒后自动关闭
+    setTimeout(() => {
+      setIsSaved(false);
+    }, 3000);
+    
+  } catch (err) {
+    console.error('保存计划错误:', err);
+    setSaveError(err.message);
+  } finally {
+    setIsSaving(false);
+  }
+}
+
+// 然后在AI分析显示部分的结尾处添加保存按钮
+// 在 downloadSection div 上方添加以下代码
+
+<div className={styles.saveSection}>
+  {!isSaved && (
+    <button 
+      onClick={savePlanToDatabase} 
+      className={styles.saveButton}
+      disabled={isSaving}
+    >
+      {isSaving ? '保存中...' : '保存到我的计划'}
+    </button>
+  )}
+  
+  {isSaved && (
+    <div className={styles.savedMessage}>
+      <span>✓</span> 计划已成功保存
+    </div>
+  )}
+  
+  {saveError && (
+    <div className={styles.error}>
+      保存失败: {saveError}
+    </div>
+  )}
+</div>
