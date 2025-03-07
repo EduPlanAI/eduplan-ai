@@ -226,4 +226,99 @@
 
 .styleBar {
   display: flex;
-  align-items: center
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.styleLabel {
+  width: 120px;
+  font-size: 0.9rem;
+}
+
+.barContainer {
+  flex: 1;
+  height: 12px;
+  background-color: #eaeaea;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 0 1rem;
+}
+
+.barFill {
+  height: 100%;
+  background-color: #0070f3;
+  transition: width 0.3s ease;
+}
+
+.styleScore {
+  width: 40px;
+  text-align: right;
+  font-weight: 500;
+}
+
+.highlight {
+  color: #0070f3;
+  margin: 0 0.25rem;
+}
+
+.recommendations {
+  background-color: #f5f9ff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.recommendations h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.recommendationList {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.recommendationList li {
+  margin-bottom: 0.5rem;
+}
+
+.strengthsInterests {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .strengthsInterests {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.strengthsBox, .interestsBox {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.strengthsBox h3, .interestsBox h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.upgradeCTA {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+@media (max-width: 640px) {
+  .buttonGroup {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .backButton, .button {
+    width: 100%;
+  }
+}
